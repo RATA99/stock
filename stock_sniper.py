@@ -3,11 +3,14 @@ import pandas as pd
 import plotly.graph_objects as go
 from settrade_v2 import Investor
 from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
 from openai import OpenAI
 import time
 import json
 
 from config import APP_ID, APP_SECRET, BROKER_ID, APP_CODE, GROQ_API_KEY
+
+BKK = ZoneInfo("Asia/Bangkok")
 
 st.set_page_config(page_title="SET Stock Sniper", layout="wide")
 
@@ -220,7 +223,7 @@ with col_toggle:
     st.session_state.auto_refresh = st.toggle("🔄 Auto", value=st.session_state.auto_refresh)
 
 with col_status:
-    st.caption(f"⏱ Last update: **{datetime.now().strftime('%H:%M:%S')}**")
+    st.caption(f"⏱ Last update: **{datetime.now(BKK).strftime('%H:%M:%S')}** (ICT)")
 
 st.divider()
 
@@ -355,7 +358,7 @@ try:
                     symbol, selected_label, df.copy(), fibo, current_p, ema50, ema200
                 )
                 st.session_state.analysis_label = (
-                    f"{symbol} • {selected_label} • {datetime.now().strftime('%H:%M:%S')}"
+                    f"{symbol} • {selected_label} • {datetime.now(BKK).strftime('%H:%M:%S')} (ICT)"
                 )
             st.session_state.analyzing = False
 
